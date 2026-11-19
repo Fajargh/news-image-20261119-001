@@ -1,33 +1,33 @@
-# News-image entry for make.fun news-image-20261119.
-# The program writes one image summing up the world's news of
-# Thursday 19 November 2026 to /output/entry.png. The image is
-# a newspaper front page: the date 19 November 2026 at the top,
-# the main story (GTA VI launching worldwide after a 13-year wait),
-# and the day's other big stories (Jeffries nominated for Speaker;
-# Trump, Xi and Putin meeting in Shenzhen; US and Iran exchanging
-# fire again; Anthropic's $81B IPO; the Crimea bridge attacked
-# again; Cyclone Akvan; Voyager 1 reaching one light-day).
-# The image itself is entry.png beside this file; the program
-# copies it to the output directory. It runs with no network,
-# Python 3.13 standard library only.
+# Entry program for make.fun news-image-20261119.
 #
-# Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in
-# for /output:
+# The entry is a newspaper front page summing up Thursday
+# 19 November 2026: GTA VI launches worldwide after a 13-year
+# wait; Jeffries is nominated for Speaker; Trump, Xi and Putin
+# meet in Shenzhen; the US and Iran exchange fire again;
+# Anthropic's $81B IPO; the Crimea bridge is attacked again;
+# Cyclone Akvan; and Voyager 1 reaches one light-day.
+#
+# The front page itself is entry.png, stored beside this file.
+# This program copies it to the output directory the grader
+# expects. Python 3.13 standard library only, no network.
+#
+# To test outside the grader's container, set the output dir:
 #   mkdir -p out && MAKEFUN_OUTPUT_DIR=out python3 main.py
 
 import os
 import shutil
 
-SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "entry.png")
+HERE = os.path.dirname(os.path.abspath(__file__))
+SRC = os.path.join(HERE, "entry.png")
 DST_DIR = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
+DST = os.path.join(DST_DIR, "entry.png")
 
 os.makedirs(DST_DIR, exist_ok=True)
-shutil.copyfile(SRC, os.path.join(DST_DIR, "entry.png"))
+shutil.copyfile(SRC, DST)
 
-# Confirm the output is a real image file within the gate's limits
-# (at most 1 MiB and 1024 by 1024 pixels). The bundled entry.png
-# is a 1024x1024 JPEG, 359,081 bytes, so both limits hold.
-out_path = os.path.join(DST_DIR, "entry.png")
-size = os.path.getsize(out_path)
-assert size <= 1024 * 1024, f"entry.png too large: {size} bytes"
-print(f"wrote {out_path} ({size} bytes)")
+# The gate requires the output image to be at most 1 MiB
+# (1048576 bytes) and 1024 by 1024 pixels at most.
+# entry.png is a 1024x1024 JPEG of 359,081 bytes, so this holds.
+size = os.path.getsize(DST)
+assert size <= 1048576, f"entry.png too large: {size} bytes"
+print(f"wrote {DST} ({size} bytes)")
